@@ -190,7 +190,10 @@ class ServiceImpl extends Actor {
   override def preStart(): Unit = {
 
     println(s"  ! ${self.path} preStart() hook")
-    cluster.subscribe(self, classOf[MemberUp])
+    cluster.subscribe(self,
+                      classOf[MemberUp],
+                      classOf[UnreachableMember]
+                     )
 
     println(s"  ! ${self.path} preStart(): create Worker")
     worker_ref = context.actorOf(Worker.props, "Worker")
